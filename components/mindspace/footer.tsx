@@ -5,9 +5,27 @@ import Link from 'next/link'
 import { Shield, Lock, Heart } from 'lucide-react'
 
 const footerLinks = {
-  Product: ['Mood Tracking', 'Journaling', 'Breathing', 'Insights', 'Community'],
-  Resources: ['Getting Started', 'Mental Health Guide', 'Crisis Support', 'Affirmations', 'Blog'],
-  Company: ['About', 'Privacy Policy', 'Terms of Service', 'Accessibility', 'Contact'],
+  Product: [
+    { label: 'Mood Tracking', href: '/#mood' },
+    { label: 'Journaling', href: '/#journal' },
+    { label: 'Breathing', href: '/#breathing' },
+    { label: 'Insights', href: '/#insights' },
+    { label: 'Dashboard', href: '/dashboard' },
+  ],
+  Resources: [
+    { label: 'Getting Started', href: '/features' },
+    { label: 'Mental Health Guide', href: '/about' },
+    { label: 'Crisis Support', href: '/support' },
+    { label: 'Affirmations', href: '/#community' },
+    { label: 'Support', href: '/support' },
+  ],
+  Company: [
+    { label: 'About', href: '/about' },
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms of Service', href: '/privacy' },
+    { label: 'Accessibility', href: '/support' },
+    { label: 'Contact', href: '/support' },
+  ],
 }
 
 const trustBadges = [
@@ -81,12 +99,12 @@ export function Footer() {
               </p>
               <ul className="flex flex-col gap-2.5" role="list">
                 {links.map((link) => (
-                  <li key={link}>
+                  <li key={link.label}>
                     <Link
-                      href="#"
+                      href={link.href}
                       className="text-sm text-muted-foreground/55 hover:text-muted-foreground transition-colors"
                     >
-                      {link}
+                      {link.label}
                     </Link>
                   </li>
                 ))}
