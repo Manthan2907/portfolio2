@@ -1,6 +1,8 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { DM_Sans, Playfair_Display } from 'next/font/google'
+import { Toaster } from 'sonner'
+import { AuthProvider } from '@/components/providers/AuthProvider'
 import './globals.css'
 
 const dmSans = DM_Sans({
@@ -62,7 +64,20 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="antialiased font-sans">
-        {children}
+        <AuthProvider>
+          {children}
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                background: 'oklch(0.13 0.025 262 / 0.95)',
+                border: '1px solid oklch(1 0 0 / 0.10)',
+                color: 'oklch(0.93 0.012 262)',
+                backdropFilter: 'blur(16px)',
+              },
+            }}
+          />
+        </AuthProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
