@@ -16,7 +16,14 @@ import {
   type Query,
   type DocumentData,
 } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
+import { db, isFirebaseConfigured } from '@/lib/firebase'
+
+function getDb() {
+  if (!isFirebaseConfigured || !db) {
+    throw new Error('Firebase data storage is not configured for this environment.')
+  }
+  return db
+}
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -69,7 +76,7 @@ export const firestoreService = {
     userId: string,
     data: Record<string, unknown>
   ) => {
-    const docRef = await addDoc(collection(db, collectionName), {
+    const docRef = await addDoc(collection(getDb(), collectionName), {
       ...data,
       userId,
       createdAt: serverTimestamp(),
@@ -78,7 +85,7 @@ export const firestoreService = {
   },
 
   getDocument: async (collectionName: string, docId: string) => {
-    const snap = await getDoc(doc(db, collectionName, docId))
+    const snap = await getDoc(doc(getDb(), collectionName, docId))
     if (snap.exists()) {
       return { id: snap.id, ...convertTimestamps(snap.data() as Record<string, unknown>) }
     }
@@ -90,17 +97,17 @@ export const firestoreService = {
     docId: string,
     data: Record<string, unknown>
   ) => {
-    await updateDoc(doc(db, collectionName, docId), { ...data, updatedAt: serverTimestamp() })
+    await updateDoc(doc(getDb(), collectionName, docId), { ...data, updatedAt: serverTimestamp() })
   },
 
   deleteDocument: async (collectionName: string, docId: string) => {
-    await deleteDoc(doc(db, collectionName, docId))
+    await deleteDoc(doc(getDb(), collectionName, docId))
   },
 
   /** One-time fetch — user scoped, sorted newest-first */
   getUserDocuments: async (collectionName: string, userId: string) => {
     const q = query(
-      collection(db, collectionName),
+      collection(getDb(), collectionName),
       where('userId', '==', userId),
       orderBy('createdAt', 'desc')
     )
@@ -119,7 +126,7 @@ export const firestoreService = {
     maxDocs?: number
   ) => {
     let q: Query<DocumentData> = query(
-      collection(db, collectionName),
+      collection(getDb(), collectionName),
       where('userId', '==', userId),
       orderBy('createdAt', 'desc')
     )
@@ -147,7 +154,7 @@ export const moodService = {
     const since = new Date()
     since.setDate(since.getDate() - days)
     const q = query(
-      collection(db, 'moods'),
+      collection(getDb(), 'moods'),
       where('userId', '==', userId),
       where('createdAt', '>=', Timestamp.fromDate(since)),
       orderBy('createdAt', 'asc')
@@ -167,7 +174,7 @@ export const moodService = {
     const since = new Date()
     since.setDate(since.getDate() - days)
     const q = query(
-      collection(db, 'moods'),
+      collection(getDb(), 'moods'),
       where('userId', '==', userId),
       where('createdAt', '>=', Timestamp.fromDate(since)),
       orderBy('createdAt', 'asc')

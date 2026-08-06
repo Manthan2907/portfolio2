@@ -3,6 +3,7 @@
 import { create } from 'zustand'
 import type { User } from 'firebase/auth'
 import { authService } from '@/lib/authService'
+import { isFirebaseConfigured } from '@/lib/firebase'
 
 interface AuthState {
   user: User | null
@@ -28,6 +29,11 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   initializeAuth: () => {
+    if (!isFirebaseConfigured) {
+      set({ loading: false })
+      return () => {}
+    }
+
     // Handle any pending Google redirect result first
     authService.handleRedirectResult().catch(console.error)
 
