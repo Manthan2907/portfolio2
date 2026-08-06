@@ -81,7 +81,7 @@ export function CTASection() {
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           viewport={{ once: true, margin: '-60px' }}
           className="flex flex-col items-center gap-5"
         >
@@ -112,7 +112,7 @@ export function CTASection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           viewport={{ once: true }}
           className="flex flex-col items-center gap-4"
         >

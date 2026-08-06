@@ -106,7 +106,7 @@ const sectionVariants = {
 
 const itemVariant = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 }
 
 export function StressSection() {
@@ -181,7 +181,7 @@ export function StressSection() {
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: `${f.level}%` }}
-                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay: 0.3 }}
                         viewport={{ once: true }}
                         className="h-full rounded-full"
                         style={{
@@ -226,7 +226,7 @@ export function StressSection() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay: 0.15 }}
             viewport={{ once: true, margin: '-60px' }}
             className="flex flex-col items-center gap-6"
           >

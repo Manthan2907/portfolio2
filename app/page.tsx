@@ -1,47 +1,55 @@
+import { BreathingSection } from '@/components/mindspace/breathing-section'
+import { CTASection } from '@/components/mindspace/cta-section'
+import { CommunitySection } from '@/components/mindspace/community-section'
+import { FeaturesSection } from '@/components/mindspace/features-section'
+import { Footer } from '@/components/mindspace/footer'
+import { HeroSection } from '@/components/mindspace/hero-section'
+import { InsightsSection } from '@/components/mindspace/insights-section'
+import { JournalSection } from '@/components/mindspace/journal-section'
+import { MoodCheckin } from '@/components/mindspace/mood-checkin'
+import { Nav } from '@/components/mindspace/nav'
+import { StressSection } from '@/components/mindspace/stress-section'
+import { Testimonials } from '@/components/mindspace/testimonials'
+
 export default function Page() {
   return (
-    <main
-      style={{
-        colorScheme: 'light dark',
-        position: 'relative',
-        display: 'flex',
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'light-dark(#fff, #000)',
-        color: 'light-dark(#000, #fff)',
-      }}
-    >
-      <svg
-        aria-hidden="true"
-        style={{ width: 80, height: 80 }}
-        width={80}
-        height={80}
-        fill="none"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
-        strokeWidth="0.5"
-      >
-        <path
-          d="M14.2 14.2H17V6.9375C17 4.76288 15.2371 3 13.0625 3H5.8V5.8M14.2 14.2V7.79063L7.79062 14.2H14.2ZM14.2 14.2V17H6.9375C4.76288 17 3 15.2371 3 13.0625V5.8H5.8M5.8 5.8V12.2313L12.2313 5.8H5.8Z"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <p
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: 'calc(50% + 56px)',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
-          fontSize: '14px',
-          fontWeight: 500,
-          color: 'light-dark(#71717a, #a1a1aa)',
-        }}
-      >
-        Your v0 generation will show here.
-      </p>
-    </main>
+    <>
+      {/* Fixed navigation */}
+      <Nav />
+
+      <main id="main-content">
+        {/* 1 — Immersive hero with celestial starfield */}
+        <HeroSection />
+
+        {/* 2 — Daily mood check-in + emotional reflection */}
+        <MoodCheckin />
+
+        {/* 3 — Journal / writing space */}
+        <JournalSection />
+
+        {/* 4 — Guided breathing exercise */}
+        <BreathingSection />
+
+        {/* 5 — Wellness insights + emotional patterns */}
+        <InsightsSection />
+
+        {/* 6 — Stress monitoring + coping suggestions */}
+        <StressSection />
+
+        {/* 7 — Feature overview cards */}
+        <FeaturesSection />
+
+        {/* 8 — Community voices + support */}
+        <CommunitySection />
+
+        {/* 9 — Social proof / testimonials */}
+        <Testimonials />
+
+        {/* 10 — Final CTA */}
+        <CTASection />
+      </main>
+
+      <Footer />
+    </>
   )
 }

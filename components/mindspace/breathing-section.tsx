@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { Pause, Play } from 'lucide-react'
 
@@ -12,7 +12,7 @@ const phases: { phase: Phase; label: string; instruction: string; duration: numb
   { phase: 'exhale', label: 'Breathe out', instruction: 'Let everything go...', duration: 8 },
 ]
 
-const circleVariants: Record<Phase, object> = {
+const circleVariants: Variants = {
   idle: { scale: 0.75, opacity: 0.65 },
   inhale: {
     scale: 1.22,
@@ -113,7 +113,7 @@ export function BreathingSection() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
           viewport={{ once: true, margin: '-60px' }}
           className="flex flex-col items-center gap-3"
         >
@@ -162,7 +162,8 @@ export function BreathingSection() {
 
           {/* Outer glow ring */}
           <motion.div
-            animate={circleVariants[currentPhase]}
+            animate={currentPhase}
+            variants={circleVariants}
             className="absolute w-48 h-48 rounded-full"
             style={{
               background:
@@ -176,7 +177,8 @@ export function BreathingSection() {
 
           {/* Main breathing circle */}
           <motion.div
-            animate={circleVariants[currentPhase]}
+            animate={currentPhase}
+            variants={circleVariants}
             className="relative w-36 h-36 rounded-full flex items-center justify-center"
             style={{
               background:

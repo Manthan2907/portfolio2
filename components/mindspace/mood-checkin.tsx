@@ -61,7 +61,7 @@ const sectionVariants = {
 
 const itemVariant = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 }
 
 function MoodArc({ values, color }: { values: number[]; color: string }) {
@@ -192,7 +192,7 @@ export function MoodCheckin() {
               initial={{ opacity: 0, y: 16, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12, scale: 0.97 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="glass-card rounded-3xl p-7 sm:p-10 max-w-2xl mx-auto"
             >
               <div className="flex flex-col sm:flex-row gap-8 items-start">
