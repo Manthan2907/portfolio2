@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Heart, PenLine, Wind, TrendingUp, AlertCircle, BookMarked } from 'lucide-react'
 
@@ -9,6 +10,7 @@ const features = [
     title: 'Mood Tracking',
     description:
       'Daily emotional check-ins that take under 30 seconds. Notice patterns without the pressure of performance.',
+    href: '#mood',
     color: 'oklch(0.65 0.115 322)',
     gradientFrom: 'oklch(0.65 0.115 322 / 0.15)',
     gradientTo: 'oklch(0.65 0.115 322 / 0.03)',
@@ -18,6 +20,7 @@ const features = [
     title: 'Guided Journaling',
     description:
       'Thoughtful prompts when the blank page feels too empty. Or write freely — both are welcome.',
+    href: '#journal',
     color: 'oklch(0.70 0.165 282)',
     gradientFrom: 'oklch(0.70 0.165 282 / 0.15)',
     gradientTo: 'oklch(0.70 0.165 282 / 0.03)',
@@ -27,6 +30,7 @@ const features = [
     title: 'Breathing Exercises',
     description:
       'Guided breathing techniques grounded in science, designed to calm your nervous system in minutes.',
+    href: '#breathing',
     color: 'oklch(0.68 0.090 200)',
     gradientFrom: 'oklch(0.68 0.090 200 / 0.15)',
     gradientTo: 'oklch(0.68 0.090 200 / 0.03)',
@@ -36,6 +40,7 @@ const features = [
     title: 'Wellness Insights',
     description:
       'Gentle patterns revealed over time. No dashboards full of numbers — just soft, meaningful summaries.',
+    href: '#insights',
     color: 'oklch(0.72 0.095 160)',
     gradientFrom: 'oklch(0.72 0.095 160 / 0.15)',
     gradientTo: 'oklch(0.72 0.095 160 / 0.03)',
@@ -45,6 +50,7 @@ const features = [
     title: 'Stress Awareness',
     description:
       'Understand your personal stress triggers and when they tend to surface — then respond with care.',
+    href: '#stress',
     color: 'oklch(0.66 0.095 60)',
     gradientFrom: 'oklch(0.66 0.095 60 / 0.15)',
     gradientTo: 'oklch(0.66 0.095 60 / 0.03)',
@@ -54,6 +60,7 @@ const features = [
     title: 'Supportive Resources',
     description:
       'Curated affirmations, exercises, and reading — gently surfaced when you might need them most.',
+    href: '#community',
     color: 'oklch(0.68 0.120 300)',
     gradientFrom: 'oklch(0.68 0.120 300 / 0.15)',
     gradientTo: 'oklch(0.68 0.120 300 / 0.03)',
@@ -159,13 +166,14 @@ export function FeaturesSection() {
                 <p className="text-sm text-muted-foreground/70 leading-relaxed">{f.description}</p>
               </div>
 
-              <button
+              <Link
+                href={f.href}
                 className="mt-auto text-xs font-medium transition-colors duration-200 text-left"
                 style={{ color: `${f.color.replace(')', ' / 0.70)')}` }}
                 aria-label={`Learn more about ${f.title}`}
               >
                 Explore &rarr;
-              </button>
+              </Link>
             </motion.div>
           ))}
         </motion.div>

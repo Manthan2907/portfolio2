@@ -64,8 +64,14 @@ export function JournalSection() {
       await journalService.save(user.uid, currentText.trim())
       toast.success('Journal entry saved')
       setCurrentText('')
-    } catch {
-      toast.error('Could not save entry. Please try again.')
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Could not save entry. Please try again.'
+      console.error('Journal save failed:', error)
+      toast.error(
+        message.includes('permission-denied')
+          ? 'Unable to save. Check Firebase permissions or login status.'
+          : message
+      )
     } finally {
       setSaving(false)
     }

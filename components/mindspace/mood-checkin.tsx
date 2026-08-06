@@ -101,9 +101,8 @@ function MoodArc({ values, color }: { values: number[]; color: string }) {
 }
 
 /** Build a 7-slot arc from this week's Firestore entries (one value per day slot) */
-function buildWeekArc(entries: (MoodEntry & { id: string })[]): number[] {
+function buildWeekArc(entries: (MoodEntry & { id: string })[], today: Date): number[] {
   const slots = Array(7).fill(50)
-  const today = new Date()
   entries.forEach((e) => {
     if (!e.createdAt) return
     const d = new Date(e.createdAt)
@@ -122,6 +121,8 @@ export function MoodCheckin() {
   const [saved, setSaved] = useState(false)
   const [weekEntries, setWeekEntries] = useState<(MoodEntry & { id: string })[]>([])
   const [showNoteField, setShowNoteField] = useState(false)
+  const [today, setToday] = useState<Date>(() => new Date(0))
+  const [todayLabel, setTodayLabel] = useState('')
 
   const activeMood = moods.find((m) => m.id === selected) ?? null
 
@@ -139,6 +140,18 @@ export function MoodCheckin() {
     setShowNoteField(false)
   }, [selected])
 
+  useEffect(() => {
+    const now = new Date()
+    setToday(now)
+    setTodayLabel(
+      now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+      })
+    )
+  }, [])
+
   const handleSave = async () => {
     if (!user) {
       toast.error('Sign in to save your check-in')
@@ -152,14 +165,20 @@ export function MoodCheckin() {
       toast.success(`${activeMood.label} check-in saved`)
       setNote('')
       setShowNoteField(false)
-    } catch {
-      toast.error('Could not save check-in. Please try again.')
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Could not save check-in. Please try again.'
+      console.error('Mood save failed:', error)
+      toast.error(
+        message.includes('permission-denied')
+          ? 'Unable to save. Check Firebase permissions or login status.'
+          : message
+      )
     } finally {
       setSaving(false)
     }
   }
 
-  const weekArc = buildWeekArc(weekEntries)
+  const weekArc = buildWeekArc(weekEntries, today)
 
   return (
     <section
@@ -271,11 +290,7 @@ export function MoodCheckin() {
                         <span className="text-foreground font-medium">{activeMood.label}</span>
                       </p>
                       <p className="text-xs text-muted-foreground/70 mt-0.5">
-                        {new Date().toLocaleDateString('en-US', {
-                          weekday: 'long',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
+                        {todayLabel}
                       </p>
                     </div>
                   </div>

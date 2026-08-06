@@ -24,19 +24,27 @@ const trustItems = [
 ]
 
 function Stars() {
-  const stars = useMemo(
-    () =>
-      Array.from({ length: 80 }, (_, i) => ({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        size: Math.random() * 2.5 + 1,
-        duration: `${Math.random() * 4 + 2.5}s`,
-        delay: `${Math.random() * 5}s`,
-        opacity: Math.random() * 0.5 + 0.15,
-      })),
-    [],
-  )
+  const stars = useMemo(() => {
+    const seed = 95731
+    const random = (() => {
+      let value = seed
+      return () => {
+        value = Math.imul(value + 0x6d2b79f5, 0x5bd1e995)
+        value ^= value >>> 15
+        return (value >>> 0) / 4294967296
+      }
+    })()
+
+    return Array.from({ length: 80 }, (_, i) => ({
+      id: i,
+      left: `${random() * 100}%`,
+      top: `${random() * 100}%`,
+      size: random() * 2.5 + 1,
+      duration: `${random() * 4 + 2.5}s`,
+      delay: `${random() * 5}s`,
+      opacity: random() * 0.5 + 0.15,
+    }))
+  }, [])
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">

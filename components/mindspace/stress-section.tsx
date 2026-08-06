@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Wind, Moon, Coffee, Cloud } from 'lucide-react'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, type ReactNode } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { moodService, type MoodEntry } from '@/lib/firestoreService'
 
@@ -52,26 +52,100 @@ function StressGauge({ value }: { value: number }) {
   )
 }
 
-const suggestions = [
-  {
-    icon: <Wind size={15} />,
-    title: 'Try a 2-min breath',
-    description: 'A short breathing exercise can calm your nervous system noticeably.',
-    color: 'oklch(0.70 0.165 282)',
-  },
-  {
-    icon: <Moon size={15} />,
-    title: 'Rest when you can',
-    description: "Your body communicates through tension. It's okay to slow down.",
-    color: 'oklch(0.68 0.145 280)',
-  },
-  {
-    icon: <Coffee size={15} />,
-    title: 'Limit stimulants',
-    description: 'Afternoon caffeine can amplify stress responses. Water is your friend.',
-    color: 'oklch(0.68 0.090 200)',
-  },
-]
+function getStressSuggestions(entries: (MoodEntry & { id: string })[], stressLevel: number) {
+  const anxiousCount = entries.filter((e) => e.moodId === 'anxious' || e.moodId === 'heavy').length
+  const calmCount = entries.filter((e) => e.moodId === 'peaceful' || e.moodId === 'hopeful').length
+
+  if (!entries.length) {
+    return [
+      {
+        icon: <Wind size={15} />,
+        title: 'Start tracking moods',
+        description: 'Log your emotions so MindSpace can personalize your stress awareness.',
+        color: 'oklch(0.70 0.165 282)',
+      },
+      {
+        icon: <Moon size={15} />,
+        title: 'Make space for rest',
+        description: 'A quiet pause helps you notice how your body feels between check-ins.',
+        color: 'oklch(0.68 0.145 280)',
+      },
+      {
+        icon: <Coffee size={15} />,
+        title: 'Tune into small signals',
+        description: 'Stress often shows up in small habits — notice them without judgement.',
+        color: 'oklch(0.68 0.090 200)',
+      },
+    ]
+  }
+
+  if (stressLevel >= 60) {
+    return [
+      {
+        icon: <Wind size={15} />,
+        title: 'Try a calming breath',
+        description: 'A short breathing pause can lower your stress response right now.',
+        color: 'oklch(0.70 0.165 282)',
+      },
+      {
+        icon: <Coffee size={15} />,
+        title: 'Notice stimulant habits',
+        description: 'If caffeine or screens are high, try reducing them to ease tension.',
+        color: 'oklch(0.68 0.090 200)',
+      },
+      {
+        icon: <Cloud size={15} />,
+        title: 'Check your boundaries',
+        description: 'Higher stress often means you need more gentle limits around your day.',
+        color: 'oklch(0.68 0.120 300)',
+      },
+    ]
+  }
+
+  if (calmCount >= anxiousCount) {
+    return [
+      {
+        icon: <Moon size={15} />,
+        title: 'Keep your calm routine',
+        description: 'You have steady moments — keep building on the practices that support them.',
+        color: 'oklch(0.68 0.145 280)',
+      },
+      {
+        icon: <Wind size={15} />,
+        title: 'Stay present',
+        description: 'A mindful pause can help you keep your balance through the day.',
+        color: 'oklch(0.70 0.165 282)',
+      },
+      {
+        icon: <Coffee size={15} />,
+        title: 'Celebrate your wins',
+        description: 'Small moments of ease matter. Notice what helped you feel a little lighter.',
+        color: 'oklch(0.68 0.090 200)',
+      },
+    ]
+  }
+
+  return [
+    {
+      icon: <Moon size={15} />,
+      title: 'Rest when you can',
+      description: "Your body communicates through tension. It's okay to slow down.",
+      color: 'oklch(0.68 0.145 280)',
+    },
+    {
+      icon: <Cloud size={15} />,
+      title: 'Pause and reflect',
+      description: 'Notice which situations felt harder this week and what helped even a little.',
+      color: 'oklch(0.68 0.120 300)',
+    },
+    {
+      icon: <Coffee size={15} />,
+      title: 'Stay grounded',
+      description: 'Simple routines can create space between pressure and your next choice.',
+      color: 'oklch(0.68 0.090 200)',
+    },
+  ]
+}
 
 const moodToValue: Record<string, number> = {
   joyful: 90, hopeful: 75, peaceful: 65, numb: 50, anxious: 35, heavy: 20,
@@ -214,7 +288,7 @@ export function StressSection() {
 
             {/* Suggestions */}
             <motion.div variants={sectionVariants} className="flex flex-col gap-3">
-              {suggestions.map((s) => (
+              {getStressSuggestions(moodEntries, stressLevel).map((s) => (
                 <motion.div
                   key={s.title}
                   variants={itemVariant}
