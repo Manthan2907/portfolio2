@@ -10,32 +10,40 @@ function requireDb() {
 }
 
 function userWellnessRef(userId: string) {
-  return doc(requireDb(), 'users', userId, 'private', 'wellness')
+  return doc(requireDb(), 'wellness', userId)
 }
 
 export async function loadPrivateWellnessData(userId: string): Promise<WellnessData | null> {
   const snapshot = await getDoc(userWellnessRef(userId))
   if (!snapshot.exists()) return null
   const data = snapshot.data().data
-  return data && typeof data === 'object' ? data as WellnessData : null
+  return data && typeof data === 'object' ? (data as WellnessData) : null
 }
 
 export async function savePrivateWellnessData(userId: string, data: WellnessData) {
-  await setDoc(userWellnessRef(userId), {
-    data,
-    updatedAt: serverTimestamp(),
-  }, { merge: true })
+  await setDoc(
+    userWellnessRef(userId),
+    {
+      data,
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true }
+  )
 }
 
 export async function clearPrivateWellnessData(userId: string) {
-  await setDoc(userWellnessRef(userId), {
-    data: {
-      habits: [],
-      completions: {},
-      moods: [],
-      journal: [],
-      stress: [],
+  await setDoc(
+    userWellnessRef(userId),
+    {
+      data: {
+        habits: [],
+        completions: {},
+        moods: [],
+        journal: [],
+        stress: [],
+      },
+      updatedAt: serverTimestamp(),
     },
-    updatedAt: serverTimestamp(),
-  }, { merge: true })
+    { merge: true }
+  )
 }
