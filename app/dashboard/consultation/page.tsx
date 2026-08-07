@@ -2,13 +2,14 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { DashboardShell } from '@/components/mindspace/dashboard-shell'
+import { ConsultationBooking } from '@/components/features/consultation-booking'
+import { FeaturePageShell } from '@/components/features/feature-page-shell'
 import { useAuthStore } from '@/store/authStore'
 
-export default function DashboardPage() {
+export default function ConsultationPage() {
   const router = useRouter()
   const { user, loading } = useAuthStore()
   useEffect(() => { if (!loading && !user) router.replace('/login') }, [loading, user, router])
   if (loading || !user) return <div className="flex min-h-screen items-center justify-center text-muted-foreground">Loading your private space...</div>
-  return <DashboardShell section="overview" />
+  return <FeaturePageShell eyebrow="Human support" title="You do not have to carry it alone." description="Browse a small, calm directory and request a private conversation when you need a little more support."><ConsultationBooking /></FeaturePageShell>
 }
