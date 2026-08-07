@@ -19,7 +19,13 @@ function friendlyAuthError(error: unknown) {
   if (code.includes('email-already-in-use')) return 'That email already has an account. Try signing in.'
   if (code.includes('weak-password')) return 'Use a password with at least 6 characters.'
   if (code.includes('invalid-email')) return 'Enter a valid email address.'
-  if (code.includes('operation-not-allowed')) return 'Enable this sign-in method in Firebase Console.'
+  if (code.includes('operation-not-allowed')) return 'Enable this sign-in method in Firebase Authentication.'
+  if (code.includes('unauthorized-domain')) {
+    const host = typeof window !== 'undefined' ? window.location.host : 'this website'
+    return `Firebase is blocking ${host}. Add this domain in Authentication → Settings → Authorized domains.`
+  }
+  if (code.includes('popup-blocked')) return 'Your browser blocked the Google sign-in window. Allow pop-ups and try again.'
+  if (code.includes('popup-closed-by-user')) return 'The Google sign-in window was closed before it finished.'
   return error instanceof Error ? error.message : 'Something went wrong. Please try again.'
 }
 
