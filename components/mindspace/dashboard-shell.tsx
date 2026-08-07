@@ -34,15 +34,29 @@ export function DashboardShell({ section = 'overview' }: { section?: 'overview' 
       .then((saved) => {
         if (active && saved) setData({ ...emptyWellnessData, ...saved })
       })
-      .catch(() => toast.error('We could not load your private wellness data.'))
+      .catch((error: unknown) => {
+        console.error('Failed to load wellness data:', error)
+        const message = error instanceof Error ? error.message : String(error)
+        if (message.includes('not configured')) {
+          toast.error('Firebase is not configured. Check your environment variables and deployment settings.')
+        } else {
+          toast.error('We could not load your private wellness data.')
+        }
+      })
     return () => { active = false }
   }, [user])
 
   useEffect(() => {
     if (!user) return
     const timeout = window.setTimeout(() => {
-      savePrivateWellnessData(user.uid, data).catch(() => {
-        toast.error('Your latest change could not be saved.')
+      savePrivateWellnessData(user.uid, data).catch((error: unknown) => {
+        console.error('Failed to save wellness data:', error)
+        const message = error instanceof Error ? error.message : String(error)
+        if (message.includes('not configured')) {
+          toast.error('Firebase is not configured. Check your environment variables and deployment settings.')
+        } else {
+          toast.error('Your latest change could not be saved.')
+        }
       })
     }, 400)
     return () => window.clearTimeout(timeout)
