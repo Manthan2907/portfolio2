@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
   type User,
@@ -94,6 +95,11 @@ export const authService = {
   signIn: async (email: string, password: string): Promise<User> => {
     const result = await signInWithEmailAndPassword(requireFirebaseAuth(), email, password)
     return result.user
+  },
+
+  /** Send a password reset email. */
+  resetPassword: async (email: string) => {
+    await sendPasswordResetEmail(requireFirebaseAuth(), email)
   },
 
   /** Sign out. */

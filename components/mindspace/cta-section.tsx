@@ -58,22 +58,9 @@ export function CTASection() {
       />
 
       {/* Stars — smaller than hero */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        {Array.from({ length: 40 }).map((_, i) => (
-          <span
-            key={i}
-            className="star"
-            style={{
-              left: `${(i * 7.3 + 11) % 100}%`,
-              top: `${(i * 13.7 + 5) % 100}%`,
-              width: ((i * 13) % 18) / 10 + 0.8,
-              height: ((i * 17) % 18) / 10 + 0.8,
-              opacity: ((i * 19) % 40) / 100 + 0.1,
-              // @ts-expect-error CSS custom property
-              '--tw-star-dur': `${((i * 23) % 30) / 10 + 2}s`,
-              '--tw-star-delay': `${((i * 29) % 40) / 10}s`,
-            }}
-          />
+      <div className="star-field absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        {Array.from({ length: 40 }, (_, i) => (
+          <span key={i} className="star" />
         ))}
       </div>
 
@@ -117,7 +104,7 @@ export function CTASection() {
           className="flex flex-col items-center gap-4"
         >
           <motion.a
-            href="#signup"
+            href="/signup"
             whileHover={{ scale: 1.04, boxShadow: '0 16px 48px oklch(0.50 0.185 282 / 0.50)' }}
             whileTap={{ scale: 0.97 }}
             className="group flex items-center gap-2.5 px-10 py-4.5 rounded-full text-base font-medium bg-primary text-primary-foreground shadow-2xl shadow-primary/35 transition-all duration-300"

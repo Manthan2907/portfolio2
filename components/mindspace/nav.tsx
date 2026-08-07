@@ -5,7 +5,6 @@ import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useAuthStore } from '@/store/authStore'
-import { AuthModal } from '@/components/mindspace/auth-modal'
 
 const navLinks = [
   { label: 'Features', href: '#features' },
@@ -17,8 +16,6 @@ const navLinks = [
 export function Nav() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [authOpen, setAuthOpen] = useState(false)
-  const [authTab, setAuthTab] = useState<'signin' | 'signup'>('signin')
 
   const { scrollY } = useScroll()
   const user = useAuthStore((s) => s.user)
@@ -27,9 +24,6 @@ export function Nav() {
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setIsScrolled(latest > 40)
   })
-
-  const openSignIn = () => { setAuthTab('signin'); setAuthOpen(true) }
-  const openSignUp = () => { setAuthTab('signup'); setAuthOpen(true) }
 
   return (
     <>
@@ -124,20 +118,21 @@ export function Nav() {
                 </>
               ) : (
                 <>
-                  <button
-                    onClick={openSignIn}
+                  <Link
+                    href="/login"
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Sign in
-                  </button>
-                  <motion.button
-                    onClick={openSignUp}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="px-5 py-2.5 rounded-full text-sm font-medium bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200"
-                  >
-                    Begin Your Journey
-                  </motion.button>
+                  </Link>
+                  <Link href="/signup">
+                    <motion.span
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="inline-block px-5 py-2.5 rounded-full text-sm font-medium bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200"
+                    >
+                      Begin Your Journey
+                    </motion.span>
+                  </Link>
                 </>
               )}
             </div>
@@ -191,18 +186,20 @@ export function Nav() {
                     </>
                   ) : (
                     <>
-                      <button
-                        onClick={() => { openSignIn(); setMenuOpen(false) }}
+                      <Link
+                        href="/login"
+                        onClick={() => setMenuOpen(false)}
                         className="py-2.5 rounded-xl text-sm text-center text-muted-foreground border border-white/10 transition-all"
                       >
                         Sign in
-                      </button>
-                      <button
-                        onClick={() => { openSignUp(); setMenuOpen(false) }}
+                      </Link>
+                      <Link
+                        href="/signup"
+                        onClick={() => setMenuOpen(false)}
                         className="py-2.5 rounded-full text-sm font-medium text-center bg-primary text-primary-foreground"
                       >
                         Begin Your Journey
-                      </button>
+                      </Link>
                     </>
                   )}
                 </div>
@@ -211,8 +208,6 @@ export function Nav() {
           )}
         </div>
       </motion.header>
-
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} defaultTab={authTab} />
     </>
   )
 }
