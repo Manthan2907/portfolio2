@@ -66,12 +66,12 @@ export function CTASection() {
             style={{
               left: `${(i * 7.3 + 11) % 100}%`,
               top: `${(i * 13.7 + 5) % 100}%`,
-              width: Math.random() * 1.8 + 0.8,
-              height: Math.random() * 1.8 + 0.8,
-              opacity: Math.random() * 0.4 + 0.1,
+              width: ((i * 13) % 18) / 10 + 0.8,
+              height: ((i * 17) % 18) / 10 + 0.8,
+              opacity: ((i * 19) % 40) / 100 + 0.1,
               // @ts-expect-error CSS custom property
-              '--tw-star-dur': `${Math.random() * 3 + 2}s`,
-              '--tw-star-delay': `${Math.random() * 4}s`,
+              '--tw-star-dur': `${((i * 23) % 30) / 10 + 2}s`,
+              '--tw-star-delay': `${((i * 29) % 40) / 10}s`,
             }}
           />
         ))}
