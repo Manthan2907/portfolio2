@@ -57,13 +57,6 @@ export function CTASection() {
         aria-hidden="true"
       />
 
-      {/* Stars — smaller than hero */}
-      <div className="star-field absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        {Array.from({ length: 40 }, (_, i) => (
-          <span key={i} className="star" />
-        ))}
-      </div>
-
       <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center text-center gap-8">
         <motion.div
           initial={{ opacity: 0, y: 32 }}

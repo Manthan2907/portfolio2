@@ -2,8 +2,6 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, Lock, Shield, Sparkles } from 'lucide-react'
-import { useMemo } from 'react'
-
 const staggerContainer = {
   hidden: { opacity: 0 },
   show: {
@@ -24,45 +22,10 @@ const trustItems = [
 ]
 
 function Stars() {
-  const stars = useMemo(() => {
-    const seed = 95731
-    const random = (() => {
-      let value = seed
-      return () => {
-        value = Math.imul(value + 0x6d2b79f5, 0x5bd1e995)
-        value ^= value >>> 15
-        return (value >>> 0) / 4294967296
-      }
-    })()
-
-    return Array.from({ length: 80 }, (_, i) => ({
-      id: i,
-      left: `${random() * 100}%`,
-      top: `${random() * 100}%`,
-      size: random() * 2.5 + 1,
-      duration: `${random() * 4 + 2.5}s`,
-      delay: `${random() * 5}s`,
-      opacity: random() * 0.5 + 0.15,
-    }))
-  }, [])
-
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-      {stars.map((s) => (
-        <span
-          key={s.id}
-          className="star"
-          style={{
-            left: s.left,
-            top: s.top,
-            width: s.size,
-            height: s.size,
-            opacity: s.opacity,
-            // @ts-expect-error CSS custom property
-            '--tw-star-dur': s.duration,
-            '--tw-star-delay': s.delay,
-          }}
-        />
+    <div className="star-field absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      {Array.from({ length: 80 }, (_, i) => (
+        <span key={i} className="star" />
       ))}
     </div>
   )
