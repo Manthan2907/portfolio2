@@ -21,7 +21,8 @@ function MiniChart({ values }: { values: number[] }) {
 export function DashboardShell({ section = 'overview' }: { section?: 'overview' | 'habits' | 'insights' | 'settings' }) {
   const user = useAuthStore((state) => state.user)
   const [data, setData] = useState<WellnessData>(emptyWellnessData)
-  const [month, setMonth] = useState(() => new Date())
+  // Keep the server snapshot deterministic, then switch to the current month after hydration.
+  const [month, setMonth] = useState(() => new Date(2024, 0, 1))
   const [habitName, setHabitName] = useState('')
   const [showHabitForm, setShowHabitForm] = useState(false)
   const [mood, setMood] = useState('')
